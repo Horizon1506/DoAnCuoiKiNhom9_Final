@@ -1,0 +1,48 @@
+﻿@model IEnumerable<SanPham>
+
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên San Pham</th>
+                <th>Mo ta</th>
+                <th>Gia</th>
+                <th>Hinh anh</th>
+                <th>The loai</th>
+                <th>Chuc Nang</th>
+            </tr>
+        </thead>
+        @foreach (var item in @Model)
+        {
+            <tbody>
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price</td>
+                    <td><img width="50" src="@item.ImageURL" /></td>
+                    <td>@item.TheLoai.Name</td>
+                    <td>
+                        <a asp-action="Upsert" asp-route-id="@item.Id">Edit</a>
+                        <a href="#">Detail</a>
+                        <a class="text-danger" onclick="xoa(@item.Id, $(this))">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+    <a asp-controller="SanPham" asp-action="Upsert" class="btn btn-primary">Them Moi</a>
+</div>
+
+<script>
+    function xoa(id, row){
+        $.ajax({
+            url: `/Admin/SanPham/Delete/${id}`,
+            type:"POST",
+            success: function (data) {
+                row.closest("tr").remove();
+            }
+        })
+    }
+</script>
+
